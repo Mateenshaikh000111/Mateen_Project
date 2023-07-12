@@ -1,19 +1,21 @@
-@Library('my-shared-library')
+@Library('my-shared-library') _
 
-pipeline {
+pipeline{
+
     agent any
 
-    stages {
-        stage('Checkout') {
+    stages{
+
+        stage('Git Checkout'){
+
             steps {
-                script {
-                    gitCheckout(
-                        branch: 'main',
-                        url: 'https://github.com/Mateenshaikh000111/Mateen_Project.git'
+            gitCheckout(
+                    branch: "main",
+                    url: "https://github.com/Mateenshaikh000111/Mateen_Project.git"
                     )
                 }
             }
         }
         // Add more stages as needed
     }
-}
+

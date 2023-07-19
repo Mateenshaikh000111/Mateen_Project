@@ -47,7 +47,7 @@ pipeline{
                 steps {
                  script{
                 
-                    StaticCodeAnalysis()
+                    StaticCodeAnalysis(credentialsId)
               }
                 }
             }

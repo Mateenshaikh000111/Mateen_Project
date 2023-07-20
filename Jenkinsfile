@@ -81,7 +81,7 @@ pipeline {
                 expression { params.action == 'Create' }
             }
             steps {
-                timeout(time: 30, unit: 'MINUTES') {
+                timeout(time: 10, unit: 'MINUTES') {
                     script {
                         mvnBuild()
                     }

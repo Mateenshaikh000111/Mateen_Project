@@ -5,7 +5,10 @@ pipeline {
 
     parameters {
         choice(name: 'action', choices: 'Create\nDelete', description: 'choose Create/Destroy')
-        //string
+        string(name: 'ImageName', description: "name of the docker", defaultvalue: 'javapp')
+        string(name: 'ImageTag', description: "tag of the docker build", defaultvalue: 'v1')
+        string(name: 'AppName', description: "name of the Application", defaultvalue: 'springboot')
+    
     }
 
     stages {
@@ -89,19 +92,19 @@ pipeline {
                 }
             }
            }
-        //      stage('Docker image Build') {
-        //     when {
-        //         expression { params.action == 'Create' }
-        //     }
-        //     steps {
-        //         timeout(time: 10, unit: 'MINUTES') {
-        //             script {
+             stage('Docker image Build') {
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    script {
 
-        //                 dockerBuild()
-        //             }
-        //         }
-        //     }
-        // }
+                        dockerBuild("${params.ImageName}","${params.ImageTag}","${params.AppName}")
+                    }
+                }
+            }
+        }
     }
 }
 

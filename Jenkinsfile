@@ -5,6 +5,7 @@ pipeline {
 
     parameters {
         choice(name: 'action', choices: 'Create\nDelete', description: 'choose Create/Destroy')
+        string
     }
 
     stages {
@@ -87,6 +88,21 @@ pipeline {
                     }
                 }
             }
-        }
+           }
+        //      stage('Docker image Build') {
+        //     when {
+        //         expression { params.action == 'Create' }
+        //     }
+        //     steps {
+        //         timeout(time: 10, unit: 'MINUTES') {
+        //             script {
+
+        //                 dockerBuild()
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
+
+

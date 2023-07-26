@@ -104,6 +104,7 @@ pipeline {
                     }
                 }
             }
+             }
               stage('Docker image Scan') {
             when {
                 expression { params.action == 'Create' }
@@ -119,5 +120,6 @@ pipeline {
         }
     }
 }
+
 
 

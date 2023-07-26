@@ -104,6 +104,18 @@ pipeline {
                     }
                 }
             }
+              stage('Docker image Scan') {
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    script {
+
+                        dockerimageScan("${params.ImageName}","${params.ImageTag}","${params.DockerHubUser}")
+                    }
+                }
+            }
         }
     }
 }

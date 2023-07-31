@@ -131,6 +131,19 @@ pipeline {
                 }
             }
         }
+                        stage('Docker image CleanUP ') {
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    script {
+
+                        dockerimageCleanup("${params.ImageName}","${params.ImageTag}","${params.DockerHubUser}")
+                    }
+                }
+            }
+        }
     }
 }
 

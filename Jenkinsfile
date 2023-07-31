@@ -92,7 +92,7 @@ pipeline {
                 }
             }
            }
-             stage('Docker image Build') {
+        stage('Docker image Build') {
             when {
                 expression { params.action == 'Create' }
             }
@@ -105,7 +105,7 @@ pipeline {
                 }
             }
              }
-              stage('Docker image Scan') {
+        stage('Docker image Scan') {
             when {
                 expression { params.action == 'Create' }
             }

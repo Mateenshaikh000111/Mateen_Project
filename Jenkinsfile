@@ -71,7 +71,7 @@ pipeline {
                 expression { params.action == 'Create' }
             }
             steps {
-                timeout(time: 30, unit: 'MINUTES') {
+                timeout(time: 20, unit: 'MINUTES') {
                     script {
                         def SonarQubecredentialsId = 'SonarQube_API'
                         QualityGateStatus(SonarQubecredentialsId)

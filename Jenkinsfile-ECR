@@ -153,12 +153,14 @@ pipeline {
             steps{
                 script{
                     dir('EKS') {
-                    sh """
-                     terraform init
-                     terraform plan -var 'access_keys=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'
-                     terraform plan -var 'access_keys=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve
-
-                    """  
+                   // Initialize Terraform
+                sh 'terraform init'
+                
+                // Plan the changes (dry-run)
+                sh "terraform plan -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
+                
+                // Apply the changes to create the EKS cluster
+                sh "terraform apply -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve" 
 }
                 }
             }

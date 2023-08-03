@@ -170,50 +170,53 @@ pipeline {
         //     }
         // }
 
-        stage('connect to EKS'){
-            when {
-                expression { params.action == 'Create' }
-            }
-            steps{
-                script{
-                    sh """
-
-              aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
-              curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.15/2023-01-11/bin/linux/amd64/kubectl
-              chmod +x ./kubectl
-              export PATH=$PATH:${WORKSPACE}  # Add kubectl to the path
-              kubectl version
-              
-                    """
-                }
-            }
-        }
-        stage('Deployment on EKS Cluster'){
-            when {
-                expression { params.action == 'Create' }
-            }
-            steps{
-                script{
-
-                    def apply = false
-
-                    try{
-                        input message: 'Please confirm to deploy on eks', ok: 'Ready to apply'
-                        apply = true
-                    }catch(err){
-                        apply= false
-                        currentBuild.result = 'UNSTABLE'
-                    }
-                    if (apply){
-                        sh """
-                           kubectl apply -f .
-                        """
-                    }
-
-
-                }
-            }
-
+stage('Connect to EKS') {
+    when {
+        expression { params.action == 'Create' }
+    }
+    steps {
+        script {
+            // Update kubeconfig
+            sh """
+            aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
+            """
+            
+            // Download kubectl
+            sh """
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+            chmod +x ./kubectl
+            """
+            
+            // Add kubectl to PATH for the entire pipeline
+            env.PATH = "${env.PATH}:${WORKSPACE}"
+            
+            // Verify kubectl version
+            sh "kubectl version"
         }
     }
+}
+
+stage('Deployment on EKS Cluster') {
+    when {
+        expression { params.action == 'Create' }
+    }
+    steps {
+        script {
+            def apply = false
+
+            try {
+                input message: 'Please confirm to deploy on eks', ok: 'Ready to apply'
+                apply = true
+            } catch (err) {
+                apply = false
+                currentBuild.result = 'UNSTABLE'
+            }
+            
+            if (apply) {
+                sh "kubectl apply -f ."
+            }
+        }
+    }
+}
+ }
     }

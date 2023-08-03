@@ -150,25 +150,25 @@ pipeline {
         //         }
         //     }
         // }
-        // stage('Create EKS Cluster : Terraform'){
-        //     when {
-        //         expression { params.action == 'Create' }
-        //     }
-        //     steps{
-        //         script{
-        //             dir('EKS') {
-        //            // Initialize Terraform
-        //         sh 'terraform init'
+        stage('Create EKS Cluster : Terraform'){
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps{
+                script{
+                    dir('EKS') {
+                   // Initialize Terraform
+                sh 'terraform init'
                 
-        //         // Plan the changes (dry-run)
-        //         sh "terraform plan -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
+                // Plan the changes (dry-run)
+                sh "terraform plan -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
                 
-        //         // Apply the changes to create the EKS cluster
-        //         sh "terraform apply -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve" 
-        //          }
-        //         }
-        //     }
-        // }
+                // Apply the changes to create the EKS cluster
+                sh "terraform  destroy -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve" 
+                 }
+                }
+            }
+        }
 
  stage('connect to EKS'){
             when {

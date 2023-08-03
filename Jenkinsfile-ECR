@@ -151,6 +151,9 @@ pipeline {
         //     }
         // }
         // stage('Create EKS Cluster : Terraform'){
+        //     when {
+        //         expression { params.action == 'Create' }
+        //     }
         //     steps{
         //         script{
         //             dir('EKS') {
@@ -168,6 +171,9 @@ pipeline {
         // }
 
         stage('connect to EKS'){
+            when {
+                expression { params.action == 'Create' }
+            }
             steps{
                 script{
                     sh """
@@ -175,6 +181,33 @@ pipeline {
                     """
                 }
             }
+        }
+        stage('Deployment on EKS Cluster'){
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps{
+                script{
+
+                    def apply = false
+
+                    try{
+                        input message: 'Please confirm to deploy on eks', ok: 'Ready to apply'
+                        apply = true
+                    }catch{err}{
+                        apply= false
+                        currentBuild.result = 'UNSTABLE'
+                    }
+                    if (apply){
+                        sh """
+                           kubectl apply -f .
+                        """
+                    }
+
+
+                }
+            }
+
         }
     }
     }

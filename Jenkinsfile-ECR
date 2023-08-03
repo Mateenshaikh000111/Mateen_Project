@@ -155,8 +155,8 @@ pipeline {
                     dir('EKS') {
                     sh """
                      terraform init
-                     terraform plan -var 'access_keys=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY'
-                     terraform plan -var 'access_keys=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' --auto-approve
+                     terraform plan -var 'access_keys=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'
+                     terraform plan -var 'access_keys=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve
 
                     """  
 }

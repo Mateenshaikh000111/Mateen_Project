@@ -177,11 +177,13 @@ pipeline {
             steps{
                 script{
                     sh """
-                      aws eks --region ${params.region} update-kubeconfig --name ${params.cluster} 
-                      curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.15/2023-01-11/bin/linux/amd64/kubectl
-                      chmod +x ./kubectl
-                      sudo mkdir -p $HOME/bin && sudo cp ./kubectl $HOME/bin/kubectl && echo 'export PATH=$PATH:$HOME/bin' >> $HOME/.bashrc && source $HOME/.bashrc
-                      kubectl version
+
+              aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
+              curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.15/2023-01-11/bin/linux/amd64/kubectl
+              chmod +x ./kubectl
+              export PATH=$PATH:${WORKSPACE}  # Add kubectl to the path
+              kubectl version
+              
                     """
                 }
             }

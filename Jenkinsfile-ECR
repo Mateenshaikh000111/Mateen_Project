@@ -8,6 +8,7 @@ pipeline {
         string(name: 'aws_account_id', description: "AWS account ID", defaultValue: '807783742011')
         string(name: 'region', description: "region for Build", defaultValue: 'us-east-2')
         string(name: 'ecr_repoName', description: "name of the Application", defaultValue: 'mateenshaikh00')
+         string(name: 'cluster', description: "name of cluster", defaultValue: 'ed-eks-01')
     
     }
 
@@ -161,7 +162,17 @@ pipeline {
                 
                 // Apply the changes to create the EKS cluster
                 sh "terraform apply -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve" 
-}
+                 }
+                }
+            }
+        }
+
+        stage('connect to EKS'){
+            steps{
+                script{
+                    sh """
+                      aws eks --region ${params.region} update-kubeconfig --name ${params.cluster} 
+                    """
                 }
             }
         }

@@ -150,26 +150,26 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Create EKS Cluster : Terraform'){
-            when {
-                expression { params.action == 'Create' }
-            }
-            steps{
-                script{
-                    dir('EKS') {
-                   // Initialize Terraform
-                sh 'terraform init'
+        // stage('Create EKS Cluster : Terraform'){
+        //     when {
+        //         expression { params.action == 'Create' }
+        //     }
+        //     steps{
+        //         script{
+        //             dir('EKS') {
+        //            // Initialize Terraform
+        //         sh 'terraform init'
                 
-                // Plan the changes (dry-run)
-                //sh "terraform plan -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
-                 sh "terraform plan -destroy -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
-                // Apply the changes to create the EKS cluster
-                //sh "terraform  apply -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve" 
-                sh "terraform destroy -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve"
-                 }
-                }
-            }
-        }
+        //         // Plan the changes (dry-run)
+        //         //sh "terraform plan -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
+        //          sh "terraform plan -destroy -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
+        //         // Apply the changes to create the EKS cluster
+        //         //sh "terraform  apply -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve" 
+        //         sh "terraform destroy -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve"
+        //          }
+        //         }
+        //     }
+        // }
 
           
         stage('Display Username and Path') {
@@ -221,7 +221,8 @@ pipeline {
                     }
                     if (apply){
                         sh """
-                           kubectl apply -f .
+                           sh "./kubectl apply -f ."
+
                         """
                     }
 

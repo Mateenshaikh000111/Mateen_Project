@@ -178,7 +178,7 @@ pipeline {
                 script{
                     sh """
 
-              aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
+              #aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
               curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.15/2023-01-11/bin/linux/amd64/kubectl
               chmod +x ./kubectl
               export PATH=$PATH:${WORKSPACE}  # Add kubectl to the path

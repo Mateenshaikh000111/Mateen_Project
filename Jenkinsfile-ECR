@@ -208,7 +208,8 @@ pipeline {
             }
             steps{
                 script{
-
+                    kubectl --help
+                    
                     def apply = false
 
                     try{

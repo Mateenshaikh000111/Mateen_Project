@@ -188,7 +188,7 @@ pipeline {
                 }
             }
         }
-    stages {
+  
         stage('Display Username and Path') {
             steps {
                 script {
@@ -201,8 +201,6 @@ pipeline {
             }
         }
         
-        // Add more stages as needed
-    }
 
         stage('Deployment on EKS Cluster'){
             when {

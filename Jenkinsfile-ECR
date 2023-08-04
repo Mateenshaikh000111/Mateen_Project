@@ -32,144 +32,144 @@ pipeline {
             }
         }
 
-        // stage('Unit Test Maven') {
-        //     when {
-        //         expression { params.action == 'Create' }
-        //     }
-        //     steps {
-        //         timeout(time: 30, unit: 'MINUTES') {
-        //             script {
-        //                 mvnTest()
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Unit Test Maven') {
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps {
+                timeout(time: 30, unit: 'MINUTES') {
+                    script {
+                        mvnTest()
+                    }
+                }
+            }
+        }
 
-        // stage('Integration Test Maven') {
-        //     when {
-        //         expression { params.action == 'Create' }
-        //     }
-        //     steps {
-        //         timeout(time: 30, unit: 'MINUTES') {
-        //             script {
-        //                 mvnintegrationTest()
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Integration Test Maven') {
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps {
+                timeout(time: 30, unit: 'MINUTES') {
+                    script {
+                        mvnintegrationTest()
+                    }
+                }
+            }
+        }
 
-        // stage('Static Code Analysis Sonarqube') {
-        //     when {
-        //         expression { params.action == 'Create' }
-        //     }
-        //     steps {
-        //         timeout(time: 30, unit: 'MINUTES') {
-        //             script {
-        //                 def SonarQubecredentialsId = 'SonarQube_API'
-        //                 StaticCodeAnalysis(SonarQubecredentialsId)
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Static Code Analysis Sonarqube') {
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps {
+                timeout(time: 30, unit: 'MINUTES') {
+                    script {
+                        def SonarQubecredentialsId = 'SonarQube_API'
+                        StaticCodeAnalysis(SonarQubecredentialsId)
+                    }
+                }
+            }
+        }
 
-        // stage('Quality gate status') {
-        //     when {
-        //         expression { params.action == 'Create' }
-        //     }
-        //     steps {
-        //         timeout(time: 20, unit: 'MINUTES') {
-        //             script {
-        //                 def SonarQubecredentialsId = 'SonarQube_API'
-        //                 QualityGateStatus(SonarQubecredentialsId)
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Quality gate status') {
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps {
+                timeout(time: 20, unit: 'MINUTES') {
+                    script {
+                        def SonarQubecredentialsId = 'SonarQube_API'
+                        QualityGateStatus(SonarQubecredentialsId)
+                    }
+                }
+            }
+        }
 
-        // stage('Maven Build : maven') {
-        //     when {
-        //         expression { params.action == 'Create' }
-        //     }
-        //     steps {
-        //         timeout(time: 10, unit: 'MINUTES') {
-        //             script {
-        //                 mvnBuild()
-        //             }
-        //         }
-        //     }
-        //    }
-        //            stage('Docker image Build:ECR ') {
-        //     when {
-        //         expression { params.action == 'Create' }
-        //     }
-        //     steps {
-        //         timeout(time: 10, unit: 'MINUTES') {
-        //             script {
+        stage('Maven Build : maven') {
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    script {
+                        mvnBuild()
+                    }
+                }
+            }
+           }
+                   stage('Docker image Build:ECR ') {
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    script {
 
-        //                 dockerBuild("${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
-        //             }
-        //         }
-        //     }
-        //      }
-        //       stage('Docker image Scan: trivy ') {
-        //     when {
-        //         expression { params.action == 'Create' }
-        //     }
-        //     steps {
-        //         timeout(time: 10, unit: 'MINUTES') {
-        //             script {
+                        dockerBuild("${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
+                    }
+                }
+            }
+             }
+              stage('Docker image Scan: trivy ') {
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    script {
 
-        //                 dockerimageScan("${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
-        //             }
-        //         }
-        //     }
-        // }
-        //         stage('Docker image Push : ECR') {
-        //     when {
-        //         expression { params.action == 'Create' }
-        //     }
-        //     steps {
-        //         timeout(time: 10, unit: 'MINUTES') {
-        //             script {
+                        dockerimageScan("${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
+                    }
+                }
+            }
+        }
+                stage('Docker image Push : ECR') {
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    script {
 
-        //                 dockerImagePush("${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
-        //             }
-        //         }
-        //     }
-        // }
-        //                 stage('Docker image CleanUP: ECR ') {
-        //     when {
-        //         expression { params.action == 'Create' }
-        //     }
-        //     steps {
-        //         timeout(time: 10, unit: 'MINUTES') {
-        //             script {
+                        dockerImagePush("${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
+                    }
+                }
+            }
+        }
+                        stage('Docker image CleanUP: ECR ') {
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps {
+                timeout(time: 10, unit: 'MINUTES') {
+                    script {
 
-        //                 dockerimageCleanup("${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
-        //             }
-        //         }
-        //     }
-        // }
-        // stage('Create EKS Cluster : Terraform'){
-        //     when {
-        //         expression { params.action == 'Create' }
-        //     }
-        //     steps{
-        //         script{
-        //             dir('EKS') {
-        //            // Initialize Terraform
-        //         sh 'terraform init'
+                        dockerimageCleanup("${params.aws_account_id}","${params.region}","${params.ecr_repoName}")
+                    }
+                }
+            }
+        }
+        stage('Create EKS Cluster : Terraform'){
+            when {
+                expression { params.action == 'Create' }
+            }
+            steps{
+                script{
+                    dir('EKS') {
+                   // Initialize Terraform
+                sh 'terraform init'
                 
-        //         // Plan the changes (dry-run)
-        //         //sh "terraform plan -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
-        //          sh "terraform plan -destroy -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
-        //         // Apply the changes to create the EKS cluster
-        //         //sh "terraform  apply -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve" 
-        //         sh "terraform destroy -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve"
-        //          }
-        //         }
-        //     }
-        // }
+                // Plan the changes (dry-run)
+                //sh "terraform plan -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
+                 sh "terraform plan -destroy -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
+                // Apply the changes to create the EKS cluster
+                //sh "terraform  apply -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve" 
+                sh "terraform destroy -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve"
+                 }
+                }
+            }
+        }
 
           
         stage('Display Username and Path') {

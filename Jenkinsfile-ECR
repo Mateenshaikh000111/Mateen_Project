@@ -161,10 +161,10 @@ pipeline {
                 sh 'terraform init'
                 
                 // Plan the changes (dry-run)
-                #sh "terraform plan -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
+                //sh "terraform plan -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
                  sh "terraform plan -destroy -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}'"
                 // Apply the changes to create the EKS cluster
-                #sh "terraform  apply -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve" 
+                //sh "terraform  apply -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve" 
                 sh "terraform destroy -var 'access_key=${ACCESS_KEY}' -var 'secret_key=${SECRET_KEY}' --auto-approve"
                  }
                 }

@@ -188,10 +188,22 @@ pipeline {
                 }
             }
         }
+    stages {
         stage('Display Username and Path') {
-        sh 'echo "Username: $USER"'
-        sh 'echo "Current Directory: $(pwd)"'
+            steps {
+                script {
+                    def username = sh(script: 'echo $USER', returnStdout: true).trim()
+                    def currentPath = sh(script: 'pwd', returnStdout: true).trim()
+                    
+                    echo "Username: ${username}"
+                    echo "Current Directory: ${currentPath}"
+                }
+            }
+        }
+        
+        // Add more stages as needed
     }
+
         stage('Deployment on EKS Cluster'){
             when {
                 expression { params.action == 'Create' }

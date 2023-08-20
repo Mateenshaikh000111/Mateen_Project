@@ -152,7 +152,7 @@ pipeline {
         // }
         stage('Create EKS Cluster : Terraform'){
             when {
-                expression { params.action == 'Create' }
+                expression { params.action == 'delete' }
             }
             steps{
                 script{
@@ -172,36 +172,36 @@ pipeline {
         }
 
           
-        stage('Display Username and Path') {
-            steps {
-                script {
-                    def username = sh(script: 'echo $USER', returnStdout: true).trim()
-                    def currentPath = sh(script: 'pwd', returnStdout: true).trim()
+//         stage('Display Username and Path') {
+//             steps {
+//                 script {
+//                     def username = sh(script: 'echo $USER', returnStdout: true).trim()
+//                     def currentPath = sh(script: 'pwd', returnStdout: true).trim()
                     
-                    echo "Username: ${username}"
-                    echo "Current Directory: ${currentPath}"
-                }
-            }
-        }
+//                     echo "Username: ${username}"
+//                     echo "Current Directory: ${currentPath}"
+//                 }
+//             }
+//         }
 
- stage('connect to EKS'){
-            when {
-                expression { params.action == 'Create' }
-            }
-            steps{
-                script{
-                    sh """
+//  stage('connect to EKS'){
+//             when {
+//                 expression { params.action == 'Create' }
+//             }
+//             steps{
+//                 script{
+//                     sh """
 
-              aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
-              curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.15/2023-01-11/bin/linux/amd64/kubectl
-              chmod +x ./kubectl
-              export PATH=$PATH:${WORKSPACE}  # Add kubectl to the path
-              kubectl version
+//               aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
+//               curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.23.15/2023-01-11/bin/linux/amd64/kubectl
+//               chmod +x ./kubectl
+//               export PATH=$PATH:${WORKSPACE}  # Add kubectl to the path
+//               kubectl version
               
-                    """
-                }
-            }
-        }
+//                     """
+//                 }
+//             }
+//         }
 
         stage('Deployment on EKS Cluster'){
             when {
